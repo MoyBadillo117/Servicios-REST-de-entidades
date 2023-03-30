@@ -39,3 +39,9 @@ def putUsuario(request, pk):
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+def deleteUsuario(request, pk):
+    user = usuarios.objects.get(id=pk)
+    user.delete()
+    return Response("Usuario eliminado")

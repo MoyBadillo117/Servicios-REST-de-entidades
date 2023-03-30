@@ -6,4 +6,5 @@ urlpatterns = [
    path('get', views.getUsuarios),
    path('post', views.postUsuario),
    path('put/<int:pk>', views.putUsuario),
+   path('delete/<int:pk>', views.deleteUsuario),
 ]
