@@ -21,9 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-z4=8_10ga**j9y$78mr!6y$9vtun1j=-vigqwoyg33-$yk4=xf"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True 
 
-ALLOWED_HOSTS = ["*"] #,"chrome-extension://ihgpcfpkpmdcghlnaofdmjkoemnlijdi/index.html"
+ALLOWED_HOSTS = ['*'] #,"chrome-extension://ihgpcfpkpmdcghlnaofdmjkoemnlijdi/index.html"
 
 #CSRF_TRUSTED_ORIGINS = ["chrome-extension://ihgpcfpkpmdcghlnaofdmjkoemnlijdi/index.html"]
 
@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
     'rest_framework',
     "REST",
 ]
@@ -115,7 +114,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = "static/"
 STATICFILES_DIRS= (os.path.join(BASE_DIR,'static'),)
 
