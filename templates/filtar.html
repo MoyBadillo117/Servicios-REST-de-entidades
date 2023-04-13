@@ -5,8 +5,8 @@
     <title>Formulario</title>
   </head>
   <body>
-    <h1>Filtro de usuarios</h1>
-    <form action="procesamiento" method="POST">
+    <h1>Filtrado de partidas</h1>
+    <form action="table" method="POST">
       {% csrf_token %}
       <label for="id_usuario">ID de usuario:</label>
       <input type="text" id="id_usuario" name="id_usuario">

@@ -126,10 +126,19 @@ def table(request):
     return render(request,'table.html',elJSON)
 """""
     
+def filtrarPartidas(request):
+    return render(request, 'filtar.html')
 
 def table(request):
     data = []
+    filtro = []
     #data.append(['Partida','Fecha','Minutos Jugados','Puntaje'])
+    idUsuario = request.POST['id_usuario']
+    minJugados = request.POST['minutos_jugados_min']
+    maxJugados = request.POST['minutos_jugados_max']
+    minPun = request.POST['puntaje_min']
+    maxPun = request.POST['puntaje_max']
+    idUsuario, minJugados, maxJugados, minPun, maxPun = conversion(idUsuario,minJugados,maxJugados,minPun,maxPun)
     resultados = Partida_Jugadores.objects.all() #Select * From Partida_Jugadores;
     if len(resultados)>0:
         for registro in resultados:
@@ -138,14 +147,40 @@ def table(request):
             fecha = registro.fecha
             minutos = registro.minutos_jugados     
             puntaje = registro.puntaje
-            data.append([idUser,ID,str(fecha),minutos,puntaje])
+            if (idUser == int(idUsuario) or idUsuario == 0) and (int(maxJugados)>=minutos or maxJugados==0) and (int(minJugados)<=minutos or minJugados==0) and (int(maxPun)>=puntaje or maxPun == 0) and (int(minPun)<=puntaje or minPun == 0):
+                data.append([idUser,ID,str(fecha),minutos,puntaje])
         data_formato = dumps(data) #formatear los datos en string para JSON 
         elJSON = {'losDatos':data_formato}
         return render(request,'table.html',elJSON)
     else:
         return HttpResponse("<h1> No hay registros a mostrar</h1>")
     
-def filtrarPartidas(request):
-    return render(request, 'filtar.html')
+def conversion(idUsuario,minJugado,maxJugado,minPun,maxPun):
+    if idUsuario!="":
+        idU = int(idUsuario)
+    else: 
+        idU = 0
+    
+    if minJugado!="":
+        minJ = int(minJugado)
+    else: 
+        minJ = 0
+
+    if maxJugado!="":
+        maxJ = int(maxJugado)
+    else: 
+        maxJ = 0
+    
+    if minPun!="":
+        minP = int(minPun)
+    else: 
+        minP = 0
+
+    if maxPun!="":
+        maxP = int(maxPun)
+    else: 
+        maxP = 0
+    return idU, minJ, maxJ, minP,maxP
+
 
 
