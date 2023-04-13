@@ -133,14 +133,19 @@ def table(request):
     resultados = Partida_Jugadores.objects.all() #Select * From Partida_Jugadores;
     if len(resultados)>0:
         for registro in resultados:
+            idUser = registro.id_usuario_id
             ID = registro.id
             fecha = registro.fecha
             minutos = registro.minutos_jugados     
             puntaje = registro.puntaje
-            data.append([ID,str(fecha),minutos,puntaje])
+            data.append([idUser,ID,str(fecha),minutos,puntaje])
         data_formato = dumps(data) #formatear los datos en string para JSON 
         elJSON = {'losDatos':data_formato}
         return render(request,'table.html',elJSON)
     else:
         return HttpResponse("<h1> No hay registros a mostrar</h1>")
+    
+def filtrarPartidas(request):
+    return render(request, 'filtar.html')
+
 

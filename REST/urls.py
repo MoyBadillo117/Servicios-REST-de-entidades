@@ -7,4 +7,5 @@ urlpatterns = [
    path('usuarios',  Usuarios.as_view(),name='Partidas'),
    path('usuarios/<int:id>',  Usuarios.as_view(),name='Partida'),
    path('table', views.table,name='table'),
+   path('filtro', views.filtrarPartidas,name='Filtro'),
 ]
