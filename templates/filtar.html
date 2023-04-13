@@ -3,27 +3,76 @@
   <head>
     <meta charset="UTF-8">
     <title>Formulario</title>
-  </head>
-  <body>
-    <h1>Filtrado de partidas</h1>
-    <form action="table" method="POST">
-      {% csrf_token %}
-      <label for="id_usuario">ID de usuario:</label>
-      <input type="text" id="id_usuario" name="id_usuario">
-      <br><br>
-      <label for="minutos_jugados_min">Minutos jugados mínimos:</label>
-      <input type="number" id="minutos_jugados_min" name="minutos_jugados_min">
-      <br><br>
-      <label for="minutos_jugados_max">Minutos jugados máximos:</label>
-      <input type="number" id="minutos_jugados_max" name="minutos_jugados_max">
-      <br><br>
-      <label for="puntaje_min">Puntaje mínimo:</label>
-      <input type="number" id="puntaje_min" name="puntaje_min">
-      <br><br>
-      <label for="puntaje_max">Puntaje máximo:</label>
-      <input type="number" id="puntaje_max" name="puntaje_max">
-      <br><br>
-      <input type="submit" value="Enviar">
-    </form>
-  </body>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+h1 {
+    text-align: center;
+    color: #333;
+  }
+
+  form {
+    max-width: 500px;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+
+  label {
+    font-size: 18px;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input[type=text], input[type=number] {
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+  }
+
+  input[type=submit] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #3e8e41;
+  }
+</style>
+</head>
+<body>
+  <h1>Filtrado de partidas</h1>
+  <form action="table" method="POST">
+    {% csrf_token %}
+    <label for="id_usuario">ID de usuario:</label>
+    <input type="text" id="id_usuario" name="id_usuario">
+    <br><br>
+    <label for="minutos_jugados_min">Minutos jugados mínimos:</label>
+    <input type="number" id="minutos_jugados_min" name="minutos_jugados_min">
+    <br><br>
+    <label for="minutos_jugados_max">Minutos jugados máximos:</label>
+    <input type="number" id="minutos_jugados_max" name="minutos_jugados_max">
+    <br><br>
+    <label for="puntaje_min">Puntaje mínimo:</label>
+    <input type="number" id="puntaje_min" name="puntaje_min">
+    <br><br>
+    <label for="puntaje_max">Puntaje máximo:</label>
+    <input type="number" id="puntaje_max" name="puntaje_max">
+    <br><br>
+    <input type="submit" value="Enviar">
+  </form>
+  <div style="text-align: center; margin-top: 20px;">
+</body>
 </html>
