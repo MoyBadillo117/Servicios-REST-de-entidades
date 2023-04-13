@@ -4,6 +4,10 @@ from django.views import View
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 import json
+from json import loads, dumps
+from django.shortcuts import render
+from django.http import HttpResponse
+import sqlite3
 # Create your views here.
 
 class Usuarios(View):
@@ -107,4 +111,36 @@ class Partidas(View):
         else:
             datos = {'message':"No se encontró la partida"}
         return JsonResponse(datos)
+    
+
+"""""
+def table(request):
+    #data = []
+    #resultados = Partida_Jugadores.objects.all() #Select * From Partida_Jugadores;
+    ID = 100
+    fecha = "21-02-2023"
+    minutos = 30
+    puntaje = 96
+    #data.append([str(ID),str(fecha),str(minutos),str(puntaje)])
+    elJSON = {'ID':ID,"fecha":fecha,"minutos":minutos,"puntaje":puntaje}
+    return render(request,'table.html',elJSON)
+"""""
+    
+
+def table(request):
+    data = []
+    #data.append(['Partida','Fecha','Minutos Jugados','Puntaje'])
+    resultados = Partida_Jugadores.objects.all() #Select * From Partida_Jugadores;
+    if len(resultados)>0:
+        for registro in resultados:
+            ID = registro.id
+            fecha = registro.fecha
+            minutos = registro.minutos_jugados     
+            puntaje = registro.puntaje
+            data.append([ID,str(fecha),minutos,puntaje])
+        data_formato = dumps(data) #formatear los datos en string para JSON 
+        elJSON = {'losDatos':data_formato}
+        return render(request,'table.html',elJSON)
+    else:
+        return HttpResponse("<h1> No hay registros a mostrar</h1>")
 

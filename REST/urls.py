@@ -6,4 +6,5 @@ urlpatterns = [
    path('partidas/<int:id>',  Partidas.as_view(),name='Partida'),
    path('usuarios',  Usuarios.as_view(),name='Partidas'),
    path('usuarios/<int:id>',  Usuarios.as_view(),name='Partida'),
+   path('table', views.table,name='table'),
 ]
