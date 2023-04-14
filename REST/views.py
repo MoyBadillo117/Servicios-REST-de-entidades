@@ -1,9 +1,13 @@
 from django.views.decorators.csrf import csrf_exempt
-from .models import usuarios, Partida_Jugadores
+from .models import usuarios, Partida_Jugadores, Filtro
 from django.views import View
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 import json
+from json import loads, dumps
+from django.shortcuts import render
+from django.http import HttpResponse
+import sqlite3
 # Create your views here.
 
 class Usuarios(View):
@@ -107,4 +111,109 @@ class Partidas(View):
         else:
             datos = {'message':"No se encontró la partida"}
         return JsonResponse(datos)
+    
+
+"""""
+def table(request):
+    #data = []
+    #resultados = Partida_Jugadores.objects.all() #Select * From Partida_Jugadores;
+    ID = 100
+    fecha = "21-02-2023"
+    minutos = 30
+    puntaje = 96
+    #data.append([str(ID),str(fecha),str(minutos),str(puntaje)])
+    elJSON = {'ID':ID,"fecha":fecha,"minutos":minutos,"puntaje":puntaje}
+    return render(request,'table.html',elJSON)
+"""""
+    
+def filtrarPartidas(request):
+    return render(request, 'filtar.html')
+
+def table(request):
+    data = []
+    filtro = []
+    #data.append(['Partida','Fecha','Minutos Jugados','Puntaje'])
+    idUsuario = request.POST['id_usuario']
+    minJugados = request.POST['minutos_jugados_min']
+    maxJugados = request.POST['minutos_jugados_max']
+    minPun = request.POST['puntaje_min']
+    maxPun = request.POST['puntaje_max']
+    idUsuario, minJugados, maxJugados, minPun, maxPun = conversion(idUsuario,minJugados,maxJugados,minPun,maxPun)
+    resultados = Partida_Jugadores.objects.all() #Select * From Partida_Jugadores;
+    if len(resultados)>0:
+        for registro in resultados:
+            idUser = registro.id_usuario_id
+            ID = registro.id
+            fecha = registro.fecha
+            minutos = registro.minutos_jugados     
+            puntaje = registro.puntaje
+            if (idUser == int(idUsuario) or idUsuario == 0) and (int(maxJugados)>=minutos or maxJugados==0) and (int(minJugados)<=minutos or minJugados==0) and (int(maxPun)>=puntaje or maxPun == 0) and (int(minPun)<=puntaje or minPun == 0):
+                data.append([idUser,ID,str(fecha),minutos,puntaje])
+        data_formato = dumps(data) #formatear los datos en string para JSON 
+        elJSON = {'losDatos':data_formato}
+        return render(request,'table.html',elJSON)
+    else:
+        return HttpResponse("<h1> No hay registros a mostrar</h1>")
+    
+def conversion(idUsuario,minJugado,maxJugado,minPun,maxPun):
+    if idUsuario!="":
+        idU = int(idUsuario)
+    else: 
+        idU = 0
+    
+    if minJugado!="":
+        minJ = int(minJugado)
+    else: 
+        minJ = 0
+
+    if maxJugado!="":
+        maxJ = int(maxJugado)
+    else: 
+        maxJ = 0
+    
+    if minPun!="":
+        minP = int(minPun)
+    else: 
+        minP = 0
+
+    if maxPun!="":
+        maxP = int(maxPun)
+    else: 
+        maxP = 0
+    return idU, minJ, maxJ, minP,maxP
+
+class Tabla(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
+    
+    def post(self, request):
+        jd = json.loads(request.body)
+        Filtro.objects.create(idUsuario=jd['id'])
+        caca = filtro = Filtro.objects.all()
+        return HttpResponse("<h1>Filtro añadido</h1>")
+    
+    def get(self, request):
+        filtroSinFiltrar = Filtro.objects.all()
+        for i in filtroSinFiltrar:
+            idUsuarioFiltrado = i.idUsuario
+        filtro = idUsuarioFiltrado
+        data = []
+        resultados = Partida_Jugadores.objects.all() #Select * From Partida_Jugadores;
+        for registro in resultados:
+            idUser = registro.id_usuario_id
+            ID = registro.id
+            fecha = registro.fecha
+            minutos = registro.minutos_jugados  
+            puntaje = registro.puntaje
+            if(idUser == filtro or filtro == 0):
+                data.append([idUser,ID,str(fecha),minutos,puntaje])
+        data_formato = dumps(data) #formatear los datos en string para JSON 
+        elJSON = {'losDatos':data_formato}
+        return render(request,'tabla.html',elJSON)
+    
+
+    
+
 

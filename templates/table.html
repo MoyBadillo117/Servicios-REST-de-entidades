@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'ID Usuario');
+        data.addColumn('number', 'ID Partida');
+        data.addColumn('string', 'Fecha');
+        data.addColumn('number', 'Minutos Jugados');
+        data.addColumn('number', 'Puntaje');
+        data.addRows({{losDatos|safe}});
+
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+      }
+    </script>
+  </head>
+  <body>
+    <div id="table_div"></div>
+    <br>
+    <button onclick="location.href='filtro'">Regresar al filtro</button>
+  </body>
+</html>
