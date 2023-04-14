@@ -191,7 +191,6 @@ class Tabla(View):
     def post(self, request):
         jd = json.loads(request.body)
         Filtro.objects.create(idUsuario=jd['id'])
-        caca = filtro = Filtro.objects.all()
         return HttpResponse("<h1>Filtro añadido</h1>")
     
     def get(self, request):
@@ -202,7 +201,7 @@ class Tabla(View):
         data = []
         resultados = Partida_Jugadores.objects.all() #Select * From Partida_Jugadores;
         for registro in resultados:
-            idUser = registro.id_usuario_id
+            idUser = registro.id_usuario_id 
             ID = registro.id
             fecha = registro.fecha
             minutos = registro.minutos_jugados  
