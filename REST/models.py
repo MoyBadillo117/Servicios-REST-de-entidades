@@ -10,3 +10,6 @@ class Partida_Jugadores(models.Model):
     id_usuario = models.ForeignKey(usuarios, on_delete=models.CASCADE) 
     minutos_jugados = models.IntegerField()
     puntaje = models.IntegerField()
+
+class Filtro(models.Model):
+    idUsuario = models.IntegerField()

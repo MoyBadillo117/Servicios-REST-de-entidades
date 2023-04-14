@@ -1,5 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
-from .models import usuarios, Partida_Jugadores
+from .models import usuarios, Partida_Jugadores, Filtro
 from django.views import View
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -182,5 +182,41 @@ def conversion(idUsuario,minJugado,maxJugado,minPun,maxPun):
         maxP = 0
     return idU, minJ, maxJ, minP,maxP
 
+class Tabla(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
+    
+    def post(self, request):
+        jd = json.loads(request.body)
+        Filtro.objects.create(idUsuario=jd['id'])
+        caca = filtro = Filtro.objects.all()
+        return HttpResponse("<h1>Filtro añadido</h1>")
+    
+    def get(self, request):
+        filtroSinFiltrar = Filtro.objects.all()
+        for i in filtroSinFiltrar:
+            idUsuarioFiltrado = i.idUsuario
+        filtro = idUsuarioFiltrado
+        data = []
+        resultados = Partida_Jugadores.objects.all() #Select * From Partida_Jugadores;
+        for registro in resultados:
+            idUser = registro.id_usuario_id
+            ID = registro.id
+            fecha = registro.fecha
+            minutos = registro.minutos_jugados  
+            puntaje = registro.puntaje
+            if(idUser == filtro or filtro == 0):
+                data.append([idUser,ID,str(fecha),minutos,puntaje])
+            else:
+                print("No entro al if")
+        data_formato = dumps(data) #formatear los datos en string para JSON 
+        elJSON = {'losDatos':data_formato}
+        print(filtro)
+        return render(request,'tabla.html',elJSON)
+    
+
+    
 
 
