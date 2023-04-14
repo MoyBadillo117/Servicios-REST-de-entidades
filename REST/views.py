@@ -209,11 +209,8 @@ class Tabla(View):
             puntaje = registro.puntaje
             if(idUser == filtro or filtro == 0):
                 data.append([idUser,ID,str(fecha),minutos,puntaje])
-            else:
-                print("No entro al if")
         data_formato = dumps(data) #formatear los datos en string para JSON 
         elJSON = {'losDatos':data_formato}
-        print(filtro)
         return render(request,'tabla.html',elJSON)
     
 
